@@ -3,11 +3,12 @@ import { MdAdd, MdClose, MdDelete, MdUpdate } from "react-icons/md";
 import DateSelector from "../../components/input/DateSelector";
 import ImageSelector from "../../components/input/ImageSelector";
 import TagInput from "../../components/input/TagInput";
-import axiosInstance from "../../utils/axiosInstance";
+
 import uploadImage from "../../utils/uploadImage";
 
 import moment from "moment";
 import { toast } from "react-toastify";
+import axiosInstance from "../../utils/axiosinstance";
 
 function AddEditTravelStory({ storyInfo, type, onClose, getAllTravelStories }) {
   const [error, setError] = useState("");
@@ -73,26 +74,24 @@ function AddEditTravelStory({ storyInfo, type, onClose, getAllTravelStories }) {
         title,
         story,
         imageUrl: storyInfo.imageUrl || "",
-        visitedLocation, 
+        visitedLocation,
         visitedDate: visitedDate
           ? moment(visitedDate).valueOf()
           : moment().valueOf(),
       };
       console.log(postData);
-      
 
       if (typeof storyImg === "object") {
         // Upload new image
         const imgUploadRes = await uploadImage(storyImg);
         imageUrl = imgUploadRes.imageUrl || "";
-        
+
         postData = {
           ...postData,
           imageUrl: imageUrl,
         };
-        
       }
-     
+
       const response = await axiosInstance.put(
         "/edit-stories/" + storyId,
         postData
@@ -146,11 +145,11 @@ function AddEditTravelStory({ storyInfo, type, onClose, getAllTravelStories }) {
 
   // Delete story image and update the story
   const handleDeleteImg = async () => {
-    const deleteImgReg = await axiosInstance.delete("delete-image",{
-      params:{
-        imageUrl:storyInfo.imageUrl
-      }
-    })
+    const deleteImgReg = await axiosInstance.delete("delete-image", {
+      params: {
+        imageUrl: storyInfo.imageUrl,
+      },
+    });
 
     if (deleteImgReg.data) {
       const storyId = storyInfo._id;
@@ -160,14 +159,15 @@ function AddEditTravelStory({ storyInfo, type, onClose, getAllTravelStories }) {
         story,
         visitedLocation,
         visitedDate: moment().valueOf(),
-        imageUrl:"",
-      }
-      const response = await axiosInstance.put( "/edit-stories/" + storyId,
-        postData);
-        setStoryImg(null)
+        imageUrl: "",
+      };
+      const response = await axiosInstance.put(
+        "/edit-stories/" + storyId,
+        postData
+      );
+      setStoryImg(null);
     }
   };
-
 
   return (
     <>
