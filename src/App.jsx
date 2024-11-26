@@ -6,9 +6,10 @@ import {
   Navigate,
 } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Login from "./pages/Auth/Login";
-import SignUp from "./pages/Auth/Signup";
+
 import "react-day-picker/style.css";
+import Login from "./pages/authpage/Login";
+import SignUp from "./pages/authpage/SignUp";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
